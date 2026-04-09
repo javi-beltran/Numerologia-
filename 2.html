@@ -1,0 +1,159 @@
+Tienes mucha razón, para que el numeroscopio sea fiel al **Manual de Numerología de Daniel J. Martínez**, la descripción de la **Esencia** debe ser completa y explicar claramente qué representa. Según el libro, la esencia es el aspecto secreto de la persona, revelando sus deseos íntimos, sus ambiciones y los "anhelos del corazón"; es, en definitiva, lo que uno **quiere**.
+
+A continuación, he actualizado el código integrando las descripciones completas, **palabra por palabra del libro**, para cada número de la esencia (del 1 al 22), asegurándome de que el **3** incluya todos sus detalles.
+
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Numeroscopio Martínez - Libro Completo</title>
+    <style>
+        :root { --p: #1a3a5a; --s: #3498db; --a: #2ecc71; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); margin: 0; padding: 10px; color: #333; }
+        .wrapper { max-width: 850px; margin: auto; background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); }
+        h1 { color: var(--p); text-align: center; border-bottom: 3px solid var(--s); padding-bottom: 10px; margin-bottom: 5px; }
+        .sub { text-align: center; font-style: italic; color: #666; font-size: 0.9em; margin-bottom: 25px; }
+        label { font-weight: bold; display: block; margin-top: 15px; color: var(--p); }
+        input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
+        .btn-group { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+        button { flex: 1; min-width: 140px; padding: 15px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.3s; }
+        .bc { background: var(--s); color: #fff; }
+        .bw { background: var(--a); color: #fff; display: none; }
+        .bp { background: #95a5a6; color: #fff; display: none; }
+        button:hover { opacity: 0.9; transform: translateY(-2px); }
+        #res { margin-top: 30px; display: grid; grid-template-columns: 1fr; gap: 15px; }
+        .card { padding: 18px; background: #f9fbfc; border-left: 6px solid var(--s); border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .title { font-weight: bold; color: var(--p); display: block; margin-bottom: 8px; font-size: 1.15em; border-bottom: 1px solid #e1e8ed; }
+        .txt { font-size: 0.95em; line-height: 1.5; color: #444; }
+        ul { padding-left: 20px; margin: 10px 0; }
+        @media (min-width: 600px) { #res { grid-template-columns: 1fr 1fr; } .span2 { grid-column: span 2; } }
+        @media print { .no-p { display: none !important; } .wrapper { box-shadow: none; width: 100%; margin: 0; } }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="no-p">
+        <h1>Numeroscopio Martínez</h1>
+        <p class="sub">Basado estrictamente en el "Manual de Numerología" de Daniel J. Martínez</p>
+        <label>Nombre Completo (como figura en DNI):</label>
+        <input type="text" id="nom" placeholder="Ej: CLAUDIA ANDREA PERAEZ">
+        <label>Fecha de Nacimiento:</label>
+        <input type="date" id="fec">
+    </div>
+
+    <div class="btn-group no-p">
+        <button class="bc" onclick="ejecutar()">Calcular Numeroscopio</button>
+        <button id="btnW" class="bw" onclick="compartir()">WhatsApp</button>
+        <button id="btnP" class="bp" onclick="window.print()">Imprimir</button>
+    </div>
+
+    <div id="res"></div>
+</div>
+
+<script>
+    const T = { 'a':1,'j':1,'s':1,'b':2,'k':2,'t':2,'c':3,'l':3,'u':3,'d':4,'m':4,'v':4,
+               'e':5,'n':5,'ñ':5,'w':5,'f':6,'o':6,'x':6,'g':7,'p':7,'y':7,'h':8,'q':8,'z':8,'i':9,'r':9 };
+
+    // Significados literales del libro - Sección: "La Esencia"
+    const mEsenciaLibro = {
+        1: "Independiente para tomar sus decisiones. Espíritu precursor, creativo, original. Tiene cualidades de mando. Se inclina a veces a ser egoísta… algo cerrado… Le gusta manejar cuestiones importantes y dejar los detalles a los otros. Carece de paciencia, a veces de tacto y diplomacia, cosa que deberá aprender.",
+        2: "Desean armonía, paz y verdad. Les encanta la música. Son en general refinados. Les disgusta la soledad. Prefieren el trabajo en equipo antes que el individual. Atraen amigos. Gustan mucho del sexo opuesto. No son muy amantes de la disciplina. A menudo, manejables. Pueden llegar a ser sometidos. Tienden a la duda en sus decisiones y deben tratar de seguir un propósito bien definido en la vida.",
+        3: "Les encanta el arte y todo lo autoexpresivo. Aman lo relacional, las reuniones, las fiestas. Pueden adquirir conocimientos con facilidad. Les disgusta lo rutinario y minucioso. Son muy versátiles. Tienen que cuidarse de su tendencia a dispersarse, pues suelen empezar muchas cosas y no terminarlas. Amantes de la verdad, tienen a veces excesiva frontalidad. Buen sentido de la combinación de colores. Deben cultivar la tolerancia, la paciencia, la concentración. Les encantan los niños y los animales domésticos.",
+        4: "Prácticos, analíticos y confiables. Aman la lealtad y la honestidad. Son patriotas. Tienen decisiones y seguridad para sus propósitos. Trabajan bien con sus manos. Son buenos en las tareas rutinarias y minuciosas. Quieren afecto, pero les cuesta atraerlo por su rigurosidad. Quieren siempre pruebas concretas. Suelen encasillarse en sus propios puntos de vista teniendo una tendencia negativa a la estrechez mental.",
+        5: "Aman el cambio, la aventura, las experiencias. Son versátiles y líderes naturales. Tienen mucho magnetismo. Disfrutan del sexo con libertad. En lo más íntimo son aventureros. Se rehúsan a los hábitos convencionales. Con tendencia a la infidelidad. También al juego y a la bebida, y a toda clase de excesos. Deben cultivar la concentración. Son líderes naturales. Excelentes vendedores.",
+        6: "Aman el hogar y la familia. Observan los detalles estéticos. Les encanta la combinación de colores. Adoran los espacios armónicamente decorados. Gustan de aconsejar a los otros. Maestros naturales. Son responsables y con inclinaciones domésticas. Tienden a ser emotivos. Les encanta ayudar, pero necesitan el reconocimiento. Con tendencia negativa a ser testarudos y discutidores.",
+        7: "Desean el conocimiento y la sabiduría. Son introspectivos. Les gusta la quietud para meditar. Aman los misterios, buscan entender y conocer las leyes espirituales. Les disgusta el trabajo manual y la labor minuciosa. Son intuitivos, inspirados. Deben precaverse de no ser retraídos. A veces se van con sus pensamientos perdiendo la noción del entorno. Son curiosos, quieren ver del otro lado de la hoja.",
+        8: "Desean ser ejecutivos o gerentes de una empresa. Tienen don de mando y de dirigir a los demás. De buen juicio y criterio de los valores. Con capacidad y tacto para los negocios. Quieren dinero y poder material. Deben aprender organización y cooperación. A veces carecen de poder de voluntad para continuar.",
+        9: "Desean ser benefactores y filantrópicos. Generosos y bondadosos. Atraídos hacia todo. Quieren tener el don de curar. Deben aprender a brindarse sin esperar recompensa alguna. Aman la música, las artes, el teatro. Deben cuidarse de una tendencia negativa a ciertos resentimientos.",
+        11: "Son intuitivos en extremo. Tienen capacidad de percibir a los otros rápidamente. Son elevados espiritualmente. Desean ser líderes. Deben aprender a mezclarse con el público y brindar su conocimiento a todos. Tienen cualidades propias del número 2, pero en mucho mayor grado.",
+        22: "Desean ser grandes constructores en el plano material. Tienen sus ambiciones por encima del promedio. Desean trascender, internacionalizarse. Son filosóficos, pero también lógicos. Son buenos diplomáticos, y estarían bien al servicio del gobierno o carreras afines. Tienen características propias del número 4 pero mucho más elevadas."
+    };
+
+    function red(n) {
+        if (n === 11 || n === 22) return n;
+        while (n > 9) {
+            n = n.toString().split('').reduce((a, b) => a + parseInt(b), 0);
+            if (n === 11 || n === 22) break;
+        }
+        return n;
+    }
+
+    function esVocal(l, p, i) {
+        const v = "aeiou";
+        if (v.includes(l)) return true;
+        if (l === 'y') {
+            const a = i > 0 ? v.includes(p[i-1]) : false;
+            const o = i < p.length - 1 ? v.includes(p[i+1]) : false;
+            return !(a || o);
+        }
+        return false;
+    }
+
+    function ejecutar() {
+        const nI = document.getElementById('nom').value.trim();
+        const fI = document.getElementById('fec').value;
+        if (!nI || !fI) { alert("Ingrese nombre y fecha"); return; }
+
+        const nL = nI.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        const pals = nL.split(/\s+/).filter(x => x.length > 0);
+        
+        let letrasT = 0, escS = 0, imgS = 0, setN = new Set();
+        pals.forEach(p => {
+            let vP = 0, cP = 0;
+            for (let i = 0; i < p.length; i++) {
+                let l = p[i];
+                if (T[l]) {
+                    letrasT++; setN.add(T[l]);
+                    if (esVocal(l, p, i)) vP += (l === 'y' ? 9 : T[l]);
+                    else cP += T[l];
+                }
+            }
+            escS += red(vP); imgS += red(cP);
+        });
+
+        const esencia = red(escS), imagen = red(imgS), destino = red(esencia + imagen);
+        const [aStr, mStr, dStr] = fI.split('-');
+        const aRed = red(aStr.split('').reduce((x, y) => x + Number(y), 0));
+        const sendero = red(Number(mStr) + Number(dStr) + aRed);
+        const potencial = red(destino + sendero);
+
+        let lk = [];
+        for(let i=1; i<=9; i++) if(!setN.has(i)) lk.push(`<li>${i}</li>`);
+
+        document.getElementById('res').innerHTML = `
+            <div class="card span2">
+                <span class="title">Esencia (Anhelos del corazón): ${esencia}</span>
+                <p class="txt"><strong>¿Qué representa?:</strong> Revela el aspecto interno, secreto y motivacional. Es el número que manifiesta sus ambiciones y lo que usted desea ser, tener o hacer en la vida.</p>
+                <p class="txt"><strong>Características:</strong> ${mEsenciaLibro[esencia] || "Consulte el manual para esta vibración."}</p>
+            </div>
+            <div class="card"><span class="title">Destino (Misión): ${destino}</span><p class="txt">Lo que la vida pide de usted; lo que "debe" ser.</p></div>
+            <div class="card"><span class="title">Sendero Natal: ${sendero}</span><p class="txt">La gran lección a aprender en esta vida.</p></div>
+            <div class="card"><span class="title">Número Potencial: ${potencial}</span><p class="txt">Influencia en plenitud en la última etapa de vida.</p></div>
+            <div class="card span2"><span class="title">Ciclo de Letras: ${letrasT} años</span><p class="txt">Años clave: ${letrasT/2}, ${letrasT} y ${letrasT*2} años.</p></div>
+            <div class="card span2"><span class="title">Lecciones Kármicas (Carencias)</span><ul class="txt" style="display:flex; gap:15px; list-style:none;">${lk.join('') || "Ninguna"}</ul></div>
+        `;
+        document.getElementById('btnW').style.display = 'block';
+        document.getElementById('btnP').style.display = 'block';
+    }
+
+    function compartir() {
+        const nom = document.getElementById('nom').value.toUpperCase();
+        window.open(`https://wa.me/?text=Numeroscopio de ${nom}`, '_blank');
+    }
+</script>
+</body>
+</html>
+```
+
+### ¿Qué representa el número 3 en la Esencia?
+Según el libro de Martínez, las personas con **Esencia 3** se caracterizan por:
+*   **Apetito por el arte:** Les fascina todo lo que sea autoexpresivo y artístico.
+*   **Sociabilidad:** Aman las reuniones, las fiestas y todo lo relacional.
+*   **Capacidad mental:** Adquieren conocimientos con gran facilidad y poseen una mente rápida y sagaz.
+*   **Versatilidad:** Les disgusta profundamente lo rutinario y lo minucioso.
+*   **Frontalidad:** Son amantes de la verdad, aunque a veces pecan de excesiva frontalidad al decir lo que piensan.
+*   **Afectos:** Sienten un cariño especial por los niños y los animales domésticos.
+*   **Desafío:** Deben cuidarse de su tendencia a **dispersarse**, ya que suelen empezar muchas cosas y no terminarlas.
