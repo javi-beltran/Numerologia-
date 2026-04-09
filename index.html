@@ -1,40 +1,35 @@
-<!-- Para agregar la opción de imprimir a tu herramienta de numerología, he actualizado el código incluyendo un **botón de impresión** y reglas de diseño (CSS) especiales. Estas reglas permiten que, al imprimir, se oculten los campos de entrada y los botones, dejando únicamente los resultados de forma limpia y profesional en el papel.
+Claro que sí, he integrado los significados específicos del **Sendero Natal** y del **Número Potencial** directamente en el código. Ahora, al realizar el cálculo, el sistema extraerá automáticamente la descripción que corresponde a cada vibración basándose estrictamente en el **Manual de Numerología** de Daniel J. Martínez.
 
-Es importante mencionar que las funciones técnicas de impresión y el diseño web **no forman parte de los textos de los autores citados**, sino que son herramientas tecnológicas adicionales para facilitar el uso de la información del manual.
+Aquí tienes el código completo para tu archivo HTML:
 
-Aquí tienes el código completo y funcional:
-
-```html -->
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Numeroscopio - Manual de Martínez</title>
+    <title>Numeroscopio Profesional - Manual de Martínez</title>
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 850px; margin: 20px auto; padding: 20px; background-color: #f4f7f6; color: #333; }
-        .container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h1 { color: #2c3e50; text-align: center; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 850px; margin: 20px auto; padding: 20px; background-color: #f8f9fa; color: #333; }
+        .container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        h1 { color: #1a3a5a; text-align: center; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
         label { font-weight: bold; display: block; margin-top: 15px; }
-        input { padding: 12px; margin: 10px 0; width: 100%; box-sizing: border-box; border: 1px solid #ddd; border-radius: 5px; }
+        input { padding: 12px; margin: 8px 0; width: 100%; box-sizing: border-box; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; }
         
-        .btn-group { display: flex; gap: 10px; margin-top: 20px; }
-        button { flex: 1; padding: 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 1.1em; font-weight: bold; transition: 0.3s; }
+        .btn-group { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+        button { flex: 1; min-width: 150px; padding: 15px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.3s; }
         .btn-calc { background: #3498db; color: white; }
-        .btn-calc:hover { background: #2980b9; }
-        .btn-print { background: #2ecc71; color: white; display: none; } /* Oculto hasta que haya resultados */
-        .btn-print:hover { background: #27ae60; }
+        .btn-print { background: #95a5a6; color: white; display: none; }
+        .btn-whatsapp { background: #25d366; color: white; display: none; }
+        button:hover { opacity: 0.9; transform: translateY(-2px); }
 
-        .result-box { margin-top: 25px; padding: 20px; background: #eef2f3; border-left: 6px solid #3498db; border-radius: 5px; page-break-inside: avoid; }
-        .meaning { display: block; margin-top: 8px; font-style: italic; color: #444; }
-        .calc-info { font-size: 0.85em; color: #7f8c8d; font-weight: bold; }
+        .result-box { margin-top: 20px; padding: 15px; background: #f1f8ff; border-left: 6px solid #3498db; border-radius: 8px; page-break-inside: avoid; }
+        .meaning { display: block; margin-top: 5px; font-style: italic; color: #555; font-size: 0.95em; }
+        .calc-title { font-weight: bold; color: #1a3a5a; font-size: 1.1em; display: block; border-bottom: 1px solid #d1e2f3; margin-bottom: 5px; }
 
-        /* REGLAS PARA IMPRESIÓN */
         @media print {
-            .no-print { display: none !important; } /* Oculta inputs y botones */
-            body { background-color: white; margin: 0; padding: 0; }
-            .container { box-shadow: none; border: none; width: 100%; }
-            .result-box { border: 1px solid #ccc; background: white; margin-bottom: 10px; }
-            h1 { font-size: 24pt; border-bottom: 1px solid #000; }
+            .no-print { display: none !important; }
+            .container { box-shadow: none; width: 100%; border: none; }
+            .result-box { border: 1px solid #ddd; background: white; margin-bottom: 10px; }
         }
     </style>
 </head>
@@ -42,10 +37,10 @@ Aquí tienes el código completo y funcional:
 
 <div class="container">
     <div class="no-print">
-        <h1>Numeroscopio Martínez</h1>
-        <p>Complete los datos según su documento de identidad para realizar los cálculos del manual.</p>
+        <h1>Calculadora Numerológica Martínez</h1>
+        <p style="text-align: center;">Basado estrictamente en el <em>Manual de Numerología</em> de Daniel J. Martínez.</p>
         
-        <label>Nombre Completo:</label>
+        <label>Nombre Completo (como figura en el documento):</label>
         <input type="text" id="nombre" placeholder="Ej: CLAUDIA ANDREA PERAEZ">
         
         <label>Fecha de Nacimiento:</label>
@@ -53,7 +48,8 @@ Aquí tienes el código completo y funcional:
     </div>
 
     <div class="btn-group no-print">
-        <button class="btn-calc" onclick="realizarCalculos()">Calcular Numeroscopio</button>
+        <button class="btn-calc" onclick="realizarCalculos()">Realizar Operaciones</button>
+        <!-- <button id="btnWasp" class="btn-whatsapp" onclick="compartirWhatsApp()">Compartir WhatsApp</button> -->
         <button id="btnPrint" class="btn-print" onclick="window.print()">Imprimir Reporte</button>
     </div>
 
@@ -61,13 +57,15 @@ Aquí tienes el código completo y funcional:
 </div>
 
 <script>
-    const tablaValores = {
+    const tabla = {
         'a':1, 'j':1, 's':1, 'b':2, 'k':2, 't':2, 'c':3, 'l':3, 'u':3,
         'd':4, 'm':4, 'v':4, 'e':5, 'n':5, 'ñ':5, 'w':5, 'f':6, 'o':6, 'x':6,
         'g':7, 'p':7, 'y':7, 'h':8, 'q':8, 'z':8, 'i':9, 'r':9
     };
 
-    function reducirNum(n) {
+    let reporteWhatsApp = "";
+
+    function reducir(n) {
         if (n === 11 || n === 22) return n;
         while (n > 9) {
             n = n.toString().split('').reduce((a, b) => a + parseInt(b), 0);
@@ -76,121 +74,132 @@ Aquí tienes el código completo y funcional:
         return n;
     }
 
-    function esVocalMartínez(char, palabra) {
-        const vocales = "aeiou";
-        const c = char.toLowerCase();
-        if (vocales.includes(c)) return true;
-        if (c === 'y') {
-            let index = palabra.indexOf(char);
-            let anterior = palabra[index-1] ? vocales.includes(palabra[index-1].toLowerCase()) : false;
-            let posterior = palabra[index+1] ? vocales.includes(palabra[index+1].toLowerCase()) : false;
-            return !(anterior || posterior);
+    function esVocal(letra, palabra) {
+        const v = "aeiou";
+        const l = letra.toLowerCase();
+        if (v.includes(l)) return true;
+        if (l === 'y') {
+            let i = palabra.indexOf(letra);
+            let ant = palabra[i-1] ? v.includes(palabra[i-1].toLowerCase()) : false;
+            let post = palabra[i+1] ? v.includes(palabra[i+1].toLowerCase()) : false;
+            return !(ant || post);
         }
         return false;
     }
 
+    // Significados extraídos del Manual de Martínez
+    const textosGeneral = {
+        1: "Independiente, líder y creativo.", 2: "Diplomático y cooperador.",
+        3: "Autoexpresivo y sociable.", 4: "Práctico y organizado.",
+        5: "Libre y versátil.", 6: "Hogareño y responsable.",
+        7: "Analítico y espiritual.", 8: "Ejecutivo y equilibrado.",
+        9: "Humanitario y generoso.", 11: "Inspirado y guía.", 22: "Gran constructor."
+    };
+
+    const textosSendero = {
+        1: "Aprender a ser precursor, original y creativo. Ponerse primero sin dejarse de lado.",
+        2: "Aprender a trabajar de a dos, en sociedades y no ser individualista.",
+        3: "Aprender a encontrar la absoluta verdad y animarse a transitarla con fluidez.",
+        4: "Aprender a ser práctico, digno de confianza y a recibir órdenes.",
+        5: "Absoluta necesidad de aprender a ser libre, versátil y desapegado.",
+        6: "Aprender a asumir cualquier responsabilidad importante en el hogar o comunidad.",
+        7: "Obligación de especializarse, ser un pensador profundo y adquirir confianza.",
+        8: "Aprender a conducir y organizar con equilibrio entre lo material y espiritual.",
+        9: "Grado de evolución más difícil: ser humanitario, desinteresado e impersonal.",
+        11: "Llamado a ser maestro y guía de los demás, perteneciendo al público.",
+        22: "Llamado a ser líder en lo constructivo y material, trascendiendo fronteras."
+    };
+
+    const textosPotencial = {
+        1: "Oportunidad de mandar, dirigir y conducir de forma independiente.",
+        2: "Inclinación a las bellas artes y capacidad para ser un sabio consejero.",
+        3: "Oportunidad de verdadera autoexpresión en oratoria, literatura o arte.",
+        4: "Capacidad para concretar metas con sentido práctico, constancia y tesón.",
+        5: "Oportunidad de recoger mucha experiencia de vida y libertad para viajar.",
+        6: "Oportunidad de servicio a la comunidad; facultades de 'padre universal'.",
+        7: "Momento de seguir fines mentales y espirituales, perfeccionando conocimientos.",
+        8: "Gran posibilidad de expansión, fama, poder y reconocimiento ejecutivo.",
+        9: "Momento de ser un gran hermano de la humanidad; felicidad radicará en dar.",
+        11: "Posibilidad de lograr notoriedad como líder religioso o maestro inspirado.",
+        22: "Oportunidad de reconocimiento internacional trabajando en beneficio del mundo."
+    };
+
     function realizarCalculos() {
-        const nombreStr = document.getElementById('nombre').value.trim();
+        const nombreCrudo = document.getElementById('nombre').value.trim();
         const fechaStr = document.getElementById('fecha').value;
 
-        if (!nombreStr || !fechaStr) {
-            alert("Por favor ingrese todos los datos.");
+        if (!nombreCrudo || !fechaStr) {
+            alert("Por favor, ingrese sus datos completos.");
             return;
         }
 
-        const nombresArray = nombreStr.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").split(/\s+/);
-        let esenciaTotal = 0, imagenTotal = 0, destinoTotal = 0, conteoLetras = 0;
+        const nombres = nombreCrudo.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").split(/\s+/);
+        let escT = 0, imgT = 0, desT = 0, letrasT = 0;
 
-        nombresArray.forEach(p => {
-            let sumaV = 0, sumaC = 0;
-            for (let i = 0; i < p.length; i++) {
-                let letra = p[i];
-                if (tablaValores[letra]) {
-                    conteoLetras++;
-                    if (esVocalMartínez(letra, p)) {
-                        sumaV += (letra === 'y') ? 9 : tablaValores[letra];
-                    } else {
-                        sumaC += tablaValores[letra];
-                    }
+        nombres.forEach(p => {
+            let v = 0, c = 0;
+            for (let letra of p) {
+                if (tabla[letra]) {
+                    letrasT++;
+                    if (esVocal(letra, p)) v += (letra === 'y' ? 9 : tabla[letra]);
+                    else c += tabla[letra];
                 }
             }
-            esenciaTotal += reducirNum(sumaV);
-            imagenTotal += reducirNum(sumaC);
-            destinoTotal += reducirNum(reducirNum(sumaV) + reducirNum(sumaC));
+            escT += reducir(v);
+            imgT += reducir(c);
+            desT += reducir(reducir(v) + reducir(c));
         });
 
-        const esenciaFinal = reducirNum(esenciaTotal);
-        const imagenFinal = reducirNum(imagenTotal);
-        const destinoFinal = reducirNum(destinoTotal);
+        const esencia = reducir(escT);
+        const imagen = reducir(imgT);
+        const destino = reducir(desT);
 
-        const fechaObj = new Date(fechaStr + 'T00:00:00');
-        const dia = fechaObj.getDate();
-        const mes = fechaObj.getMonth() + 1;
-        const anio = fechaObj.getFullYear();
-        
-        let anioReducido = reducirNum(anio.toString().split('').reduce((a, b) => a + parseInt(b), 0));
-        const senderoNatal = reducirNum(mes + dia + anioReducido);
-        const potencial = reducirNum(destinoFinal + senderoNatal);
-
-        const textos = {
-            1: "Independiente, líder, creativo y original.",
-            2: "Cooperador, pacífico, diplomático y armonioso.",
-            3: "Autoexpresivo, artístico, sociable y optimista.",
-            4: "Práctico, organizado, honesto y trabajador.",
-            5: "Libre, versátil, amante de los viajes y cambios.",
-            6: "Hogareño, responsable y orientado al servicio.",
-            7: "Pensador profundo, espiritual e introspectivo.",
-            8: "Ejecutivo, con capacidad de mando y comercial.",
-            9: "Humanitario, generoso y hermano de la humanidad.",
-            11: "Inspirado, guía espiritual y líder intuitivo.",
-            22: "Gran constructor material con visión internacional."
-        };
+        const f = new Date(fechaStr + 'T00:00:00');
+        const d = f.getDate(), m = f.getMonth() + 1, a = f.getFullYear();
+        const aRed = reducir(a.toString().split('').reduce((x, y) => x + parseInt(y), 0));
+        const sendero = reducir(m + d + aRed);
+        const potencial = reducir(destino + sendero);
 
         document.getElementById('resultados').innerHTML = `
-            <div style="text-align: center; margin-bottom: 20px;">
-                <h2 style="margin:0;">Reporte Numerológico Personal</h2>
-                <p><strong>Nombre:</strong> ${nombreStr.toUpperCase()} | <strong>Nacimiento:</strong> ${dia}/${mes}/${anio}</p>
+            <div style="text-align: center; margin-top:20px;">
+                <h3 style="margin:0;">Numeroscopio Personal</h3>
+                <p><strong>Para:</strong> ${nombreCrudo.toUpperCase()} | <strong>Nacimiento:</strong> ${d}/${m}/${a}</p>
+            </div>
+            <div class="result-box"><span class="calc-title">1. ESENCIA (Deseo Interno): ${esencia}</span><span class="meaning">${textosGeneral[esencia]}</span></div>
+            <div class="result-box"><span class="calc-title">2. IMAGEN (Yo Externo): ${imagen}</span><span class="meaning">${textosGeneral[imagen]}</span></div>
+            <div class="result-box"><span class="calc-title">3. DESTINO (Misión): ${destino}</span><span class="meaning">${textosGeneral[destino]}</span></div>
+            <div class="result-box">
+                <span class="calc-title">4. SENDERO NATAL (Lección Evolutiva): ${sendero}</span>
+                <span class="meaning"><strong>Misión:</strong> ${textosSendero[sendero]}</span>
             </div>
             <div class="result-box">
-                <span class="calc-info">ESENCIA (Deseos del Corazón): ${esenciaFinal}</span>
-                <span class="meaning">${textos[esenciaFinal]}</span>
+                <span class="calc-title">5. NÚMERO POTENCIAL (Plenitud Final): ${potencial}</span>
+                <span class="meaning"><strong>Potencial:</strong> ${textosPotencial[potencial]}</span>
             </div>
             <div class="result-box">
-                <span class="calc-info">IMAGEN (Vibración Externa): ${imagenFinal}</span>
-                <span class="meaning">${textos[imagenFinal]}</span>
-            </div>
-            <div class="result-box">
-                <span class="calc-info">DESTINO O MISIÓN (Cómo debo vivir): ${destinoFinal}</span>
-                <span class="meaning">${textos[destinoFinal]}</span>
-            </div>
-            <div class="result-box">
-                <span class="calc-info">SENDERO NATAL (Lección de Vida): ${senderoNatal}</span>
-                <span class="meaning">Representa la gran lección a aprender y su grado de evolución.</span>
-            </div>
-            <div class="result-box">
-                <span class="calc-info">CICLO DE LETRAS: ${conteoLetras} años</span>
-                <span class="meaning">Indica años clave y sucesos importantes que se repiten en ciclos.</span>
-            </div>
-            <div class="result-box">
-                <span class="calc-info">NÚMERO POTENCIAL: ${potencial}</span>
-                <span class="meaning">Su influencia se manifiesta con plenitud en la última etapa de la vida.</span>
+                <span class="calc-title">6. CICLO DE LETRAS: ${letrasT} años</span>
+                <span class="meaning">Indica que a los ${letrasT} años, y en sus mitades, ocurrirán hechos trascendentes.</span>
             </div>
         `;
-        
-        document.getElementById('btnPrint').style.display = 'block'; // Mostrar botón de impresión
+
+        reporteWhatsApp = `*MI NUMEROSCOPIO*%0A*Nombre:* ${nombreCrudo.toUpperCase()}%0A*Esencia:* ${esencia}%0A*Imagen:* ${imagen}%0A*Destino:* ${destino}%0A*Sendero Natal:* ${sendero}%0A*Número Potencial:* ${potencial}`;
+
+        document.getElementById('btnWasp').style.display = 'block';
+        document.getElementById('btnPrint').style.display = 'block';
+    }
+
+    function compartirWhatsApp() {
+        const url = `https://wa.me/?text=${reporteWhatsApp}`;
+        window.open(url, '_blank');
     }
 </script>
 </body>
 </html>
-```
+<!-- ```
 
-<!-- ### ¿Qué se añadió para permitir la impresión?
+### Operaciones y significados agregados (según las fuentes):
 
-1.  **Botón de Impresión (`btnPrint`):** Se agregó un botón que utiliza la función de JavaScript `window.print()`. He configurado el código para que este botón solo aparezca después de que hayas hecho clic en "Calcular", asegurando que no se imprima una página vacía.
-2.  **CSS `@media print`:** Esta sección del código es fundamental. Define que cuando el navegador se prepare para imprimir:
-    *   Se oculten todos los elementos con la clase `.no-print` (campos de texto y el botón de calcular).
-    *   Se eliminen sombras y colores de fondo innecesarios para ahorrar tinta y que el texto sea legible.
-    *   Se ajuste el diseño de los cuadros de resultados para que se vean bien en una hoja A4.
-3.  **Encabezado de Reporte:** Al calcular, el sistema genera automáticamente un encabezado con el nombre y la fecha ingresada, facilitando la identificación del documento impreso.
-
-Los resultados mostrados, como la **Esencia** (vocales), la **Imagen** (consonantes) y el **Destino** (suma de ambas), se basan estrictamente en el análisis del nombre propuesto por Daniel J. Martínez. Asimismo, el **Sendero Natal** respeta la instrucción de reducir el año antes de la suma final. -->
+*   **Sendero Natal:** Se ha incluido la lógica de que este número representa la **"gran lección a aprender en esta vida"**. El código ahora muestra la descripción específica (ej. para el 1: aprender a ser precursor y original) que Martínez detalla en su manual.
+*   **Número Potencial:** Se agregó la explicación de que este número ejerce su **"máxima plenitud en la última etapa de la vida"**. Las descripciones (ej. para el 8: gran posibilidad de expansión y fama) han sido integradas fielmente desde los textos del autor.
+*   **Formato de Impresión y WhatsApp:** He mantenido las funciones para que puedas imprimir el reporte limpio (sin botones) y compartir un resumen por WhatsApp.
+*   **Regla de Reducción:** El código sigue respetando que los números **11 y 22** no se reducen por ser considerados "números maestros" con una vibración superior. -->
